@@ -1,0 +1,48 @@
+# Versi Docker Compose yang digunakan
+version: "3.8"
+
+# Konfigurasi service untuk aplikasi item-app dan basis data item-db
+services:
+  # Service untuk aplikasi item-app yang diambil dari Github Packages
+  item-app:
+    # Menggunakan image item-app dari GitHub Packages
+    image: "ghcr.io/ymasterous/item-app:v1"
+
+    # Port 8080 pada container akan diexpose ke port 80 pada host
+    ports:
+      - "80:8080"
+
+    # Service item-app akan bergantung pada service item-db
+    depends_on:
+      # Service item-app akan menunggu hingga service pada item-db sudah dalam keadaan siap
+      item-db:
+        # Melakukan health check dan dianggap "sehat" atau "siap" untuk menerima koneksi
+        condition: service_healthy
+
+    # Service akan di-restart otomatis jika terjadi kesalahan
+    restart: always
+
+  # Service item-db (MongoDB) dari Docker Hub
+  item-db:
+    # Menggunakan image item-db dari Docker Hub
+    image: "mongo:3"
+
+    # Port 27017 pada container akan diexpose ke port 27017 pada host
+    ports:
+      - "27017:27017"
+
+    # Menambahkan healthcheck untuk memeriksa status MongoDB
+    healthcheck:
+      # Perintah untuk memeriksa status MongoDB
+      test: ["CMD", "mongo", "--eval", "db.stats()"]
+
+    # Volume app-db akan di-mount ke /data/db
+    volumes:
+      - app-db:/data/db
+
+    # Service akan di-restart otomatis jika terjadi kesalahan
+    restart: always
+
+# Membuat volume bernama app-db
+volumes:
+  app-db:
