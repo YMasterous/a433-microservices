@@ -40,7 +40,8 @@ jobs:
             docker push $IMAGE_NAME:latest
 
 workflows:
-  ci:
+  version: 2
+  test-and-build:
     jobs:
       - lint-dockerfile
       - test-app:
