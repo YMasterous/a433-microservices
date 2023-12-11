@@ -29,7 +29,8 @@ jobs:
             docker push $IMAGE_NAME:latest
 
 workflows:
-  ci:
+  version: 2
+  lint-and-build:
     jobs:
       - lint-dockerfile
       - build-app-karsajobs-ui:
