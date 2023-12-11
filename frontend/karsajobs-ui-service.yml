@@ -1,0 +1,24 @@
+# Mendefinisikan versi api
+apiVersion: v1
+# Menetapkan jenis objek Kubernetes (Service)
+kind: Service
+# Metadata untuk Service
+metadata:
+  # Menetapkan nama Service
+  name: karsajobs-ui-service
+  # Menetapkan label Service
+  labels:
+    # Nama label yang sesuai
+    app: frontend
+# Menentukan spesifikasi untuk Service
+spec:
+  # Menetukan tipe Service, yaitu NodePort
+  type: NodePort
+  # Menetapkan port yang digunakan pada Service
+  ports:
+  # Menuliskan port
+  - port: 8000
+  # Mengatur selector untuk memilih pod yang akan dilayani oleh Service
+  selector:
+    # Menuliskan namanya sesuai ketentuan
+    app: frontend

@@ -1,0 +1,24 @@
+# Mendefinisikan versi api
+apiVersion: v1
+# Menetapkan jenis objek Kubernetes (Service)
+kind: Service
+# Metadata untuk Service
+metadata:
+  # Menetapkan nama Service
+  name: mongo-service
+  # Menetapkan label Service
+  labels:
+    # Nama label yang sesuai
+    app: database
+# Menentukan spesifikasi untuk service
+spec:
+  # Menetapkan port yang digunakan pada Service
+  ports:
+  # Menuliskan port
+  - port: 27017
+    # Menetapkan protocol yang digunakan
+    protocol: TCP
+  # Mengatur selector untuk memilih pod yang akan dilayani oleh Service
+  selector:
+    # Menuliskan namanya sesuai ketentuan
+    app: database
