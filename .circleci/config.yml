@@ -1,0 +1,37 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@2.2.0
+  
+jobs:
+  lint-dockerfile:
+    executor: docker/docker
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Run hadolint
+          command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+  build-app-karsajobs-ui:
+    executor: docker/docker
+    environment:
+      IMAGE_NAME: ghcr.io/ymasterous/karsajobs-ui
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker Image
+          command: docker build -t $IMAGE_NAME:latest .
+      - run:
+          name: Publish Docker Image to GitHub Container Registry
+          command: |
+            echo "$CR_PAT" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
+            docker push $IMAGE_NAME:latest
+
+workflows:
+  ci:
+    jobs:
+      - lint-dockerfile
+      - build-app-karsajobs-ui:
+          requires:
+            - lint-dockerfile
