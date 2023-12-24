@@ -1,0 +1,28 @@
+# Konfigurasi untuk membuat Gateway yang memungkinkan akses ke service order dan shipping dari luar cluster
+apiVersion: networking.istio.io/v1alpha3
+# Menetapkan jenis objek Kubernetes (Gateway)
+kind: Gateway
+# Metadata untuk Gateway
+metadata:
+  # Nama Gateway yang akan dibuat
+  name: ingress-gateway
+# Spesifikasi untuk Gateway
+spec:
+  # Selector ini menentukan istio-ingressgateway yang telah diinstal di dalam namespace istio-system
+  selector:
+    # Menetapkan nama label yang sesuai
+    istio: ingressgateway
+  # Membuat port gateway untuk protokol http dari luar cluster
+  servers:
+      # Mengatur port yang digunakan untuk mengakses service dari luar cluster
+    - port:
+        # Nomor port untuk akses http
+        number: 80
+        # Nama port http
+        name: http
+        # Protokol yang digunakan (HTTP)
+        protocol: HTTP
+      # Mengatur host yang akan diakses
+      hosts:
+        # Memungkinkan akses dari semua host
+        - "*"

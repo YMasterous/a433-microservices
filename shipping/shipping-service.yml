@@ -4,21 +4,21 @@ apiVersion: v1
 kind: Service
 # Metadata untuk Service
 metadata:
-  # Menetapkan nama service
-  name: karsajobs-service
-  # Menetapkan label service
+  # Menetapkan nama Service
+  name: shipping
+  # Menetapkan label Service
   labels:
     # Nama label yang sesuai
-    app: backend
-# Menentukan spesifikasi untuk service
+    app: shipping
+  # Menetapkan namespace service
+  namespace: ecommerce
+# Menentukan spesifikasi untuk Service
 spec:
-  # Menentukan tipe Service, yaitu NodePort
-  type: NodePort
   # Menetapkan port yang digunakan pada Service
   ports:
-  # Menuliskan port
-  - port: 8080
+  # Menuliskan port 3001
+    - port: 3001
   # Mengatur selector untuk memilih pod yang akan dilayani oleh Service
   selector:
     # Menuliskan namanya sesuai ketentuan
-    app: backend
+    app: shipping

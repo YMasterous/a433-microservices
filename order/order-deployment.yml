@@ -1,0 +1,62 @@
+# Mendefinisikan versi api
+apiVersion: apps/v1
+# Menetapkan jenis objek Kubernetes (Deployment)
+kind: Deployment
+# Metadata untuk Deployment
+metadata:
+  # Menetapkan nama deployment
+  name: order
+  # Menetapkan namespace deployment
+  namespace: ecommerce
+# Menentukan spesifikasi untuk deployment
+spec:
+  # Menentukan jumlah replika Pod
+  replicas: 1
+  # Menetapkan selector untuk memilih Pod
+  selector:
+    # Melakukan pemilihan Pod dimana harus memiliki label sesuai ketentuan (app: order)
+    matchLabels:
+      # Menetapkan nama label yang sesuai
+      app: order
+  # Menetapkan template untuk membuat Pod
+  template:
+    # Menetapkan metadata untuk Pod
+    metadata:
+      # Menetapkan label untuk Pod
+      labels:
+        # Nama app untuk Pod
+        app: order
+        # Menambahkan label version: latest
+        version: latest
+      # Menambahkan annotation untuk limitasi resource yang digunakan oleh istio-proxy
+      annotations:
+        sidecar.istio.io/proxyCPU: 25m
+        sidecar.istio.io/proxyCPULimit: 50m
+        sidecar.istio.io/proxyMemory: 32Mi
+        sidecar.istio.io/proxyMemoryLimit: 64Mi
+    # Melakukan spesifikasi untuk Pod
+    spec:
+      # Melakukan konfigurasi pada Container dalam Pod
+      containers:
+        # Nama container
+        - name: order
+          # Menetapkan nama image yang digunakan untuk membuat container
+          image: ghcr.io/ymasterous/order-service:latest
+          # Merupakan mekanisme pull image (image akan dipull setiap kali pod dimulai)
+          imagePullPolicy: Always
+          # Tidak ada resource request dan limit
+          resources: {}
+          # Port yang digunakan
+          ports:
+          # Port yang digunakan untuk mengakses container, yaitu port 3000
+            - containerPort: 3000
+          # Environment variables yang digunakan oleh aplikasi, yaitu variable PORT dan AMQP_URL
+          env:
+            # Nama (name) environment variable untuk PORT
+            - name: PORT
+              # Nilai (value) environment variable untuk PORT
+              value: "3000"
+              # Nama (name) environment variable untuk AMQP_URL
+            - name: AMQP_URL
+              # Nilai (value) environment variable untuk AMQP_URL, yaitu endpoint RabbitMQ dengan username dan password test
+              value: amqp://test:test@rabbitmq.rabbit.svc.cluster.local:5672

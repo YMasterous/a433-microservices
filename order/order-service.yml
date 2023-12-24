@@ -5,20 +5,20 @@ kind: Service
 # Metadata untuk Service
 metadata:
   # Menetapkan nama Service
-  name: mongo-service
+  name: order
   # Menetapkan label Service
   labels:
     # Nama label yang sesuai
-    app: database
-# Menentukan spesifikasi untuk service
+    app: order
+  # Menetapkan namespace service
+  namespace: ecommerce
+# Menentukan spesifikasi untuk Service
 spec:
   # Menetapkan port yang digunakan pada Service
   ports:
-  # Menuliskan port
-  - port: 27017
-    # Menetapkan protocol yang digunakan
-    protocol: TCP
+  # Menuliskan port 3000
+    - port: 3000
   # Mengatur selector untuk memilih pod yang akan dilayani oleh Service
   selector:
     # Menuliskan namanya sesuai ketentuan
-    app: database
+    app: order

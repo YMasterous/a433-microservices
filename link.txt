@@ -1,2 +1,2 @@
-https://github.com/users/YMasterous/packages/container/package/karsajobs
-https://github.com/users/YMasterous/packages/container/package/karsajobs-ui
+https://github.com/users/YMasterous/packages/container/package/order-service
+https://github.com/users/YMasterous/packages/container/package/shipping-service

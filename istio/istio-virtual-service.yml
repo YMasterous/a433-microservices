@@ -1,0 +1,71 @@
+# Konfigurasi Virtual Service untuk service order di namespace ecommerce
+apiVersion: networking.istio.io/v1alpha3
+# Menetapkan jenis objek Kubernetes (VirtualService)
+kind: VirtualService
+# Metadata untuk VirtualService
+metadata:
+  # Nama VirtualService
+  name: order
+# Spesifikasi untuk VirtualService
+spec:
+  # Mendefinsikan hosts yang berasal dari luar cluster
+  hosts:
+    # Memungkinkan akses dari semua host
+    - "*"
+  # Menetapkan gateway yang digunakan untuk mengakses service order
+  gateways:
+    # Menggunakan gateway ingress-gateway
+    - ingress-gateway
+  # Menetapkan rute untuk VirtualService
+  http:
+    # Jika path yang diakses adalah /order, maka akan diarahkan ke service order
+    - match:
+        # Path yang diakses
+        - uri:
+            # Path yang diakses adalah /order
+            exact: /order
+      # Menetapkan rute untuk path /order
+      route:
+        # Menetapkan tujuan rute service order pada port 3000 di namespace ecommerce
+        - destination:
+            # Nama host untuk service order
+            host: order
+            # Port untuk service order
+            port:
+              # Nomor port untuk service order
+              number: 3000
+---
+# Konfigurasi Virtual Service untuk service shipping di namespace ecommerce
+apiVersion: networking.istio.io/v1alpha3
+# Menetapkan jenis objek Kubernetes (VirtualService)
+kind: VirtualService
+# Metadata untuk VirtualService
+metadata:
+  # Nama VirtualService
+  name: shipping
+# Spesifikasi untuk VirtualService
+spec:
+  # Mengatur hosts yang berasal dari luar cluster
+  hosts:
+    - "*"
+  # Gateway yang digunakan untuk mengakses service shipping
+  gateways:
+    - ingress-gateway
+  # Rute untuk VirtualService
+  http:
+    # Mengarahkan ke service shipping apabila path yang diakses adalah /shipping 
+    - match:
+        # Path yang diakses
+        - uri:
+            # Path yang diakses adalah /shipping
+            exact: /shipping
+      # Menetapkan rute untuk path /shipping
+      route:
+        # Menetapkan tujuan rute service shipping pada port 3001 di namespace ecommerce
+        - destination:
+            # Nama host untuk service shipping
+            host: shipping
+            # Port untuk service shipping
+            port:
+              # Nomor port untuk service shipping
+              number: 3001
