@@ -1,0 +1,29 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@2.2.0
+
+jobs:
+  lint-dockerfile:
+    executor: docker/docker
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Run hadolint
+          command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+  build-shipping-service:
+    executor: docker/docker
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: ./build_push_image_shipping_service.sh
+
+workflows:
+  version: 2
+  test-and-build:
+    jobs:
+      - lint-dockerfile
+      - build-shipping-service:
+          requires:
+            - lint-dockerfile
