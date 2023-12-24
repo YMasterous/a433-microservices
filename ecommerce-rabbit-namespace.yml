@@ -1,0 +1,27 @@
+# Membuat namespace dengan nama 'ecommerce' untuk melakukan deployment order dan shipping
+apiVersion: v1
+# Menetapkan jenis objek Kubernetes (Namespace)
+kind: Namespace
+# Menetapkan metadata untuk namespace ecommerce
+metadata:
+  # Menetapkan nama namespace
+  name: ecommerce
+  # Menetapkan label namespace
+  labels:
+    # Menetapkan nama label yang sesuai
+    name: ecommerce
+    # Melakukan konfigurasi agar semua pod yang berada di namespace ecommerce akan terpasang istio-proxy
+    istio-injection: enabled
+---
+# Membuat namespace bernama 'rabbit' untuk melakukan deployment rabbitmq tanpa menggunakan istio-proxy
+apiVersion: v1
+# Menetapkan jenis objek Kubernetes (Namespace)
+kind: Namespace
+# Menetapkan metadata untuk namespace rabbit
+metadata:
+  # Menetapkan nama namespace
+  name: rabbit
+  # Menetapkan label namespace
+  labels:
+    # Menetapkan nama label yang sesuai
+    name: rabbit
